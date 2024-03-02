@@ -1,0 +1,9 @@
+// Remove the unnecessary import statement for 'jsonc'
+// import jsonc from 'jsonc';
+
+{
+    "python.analysis.extraPaths": [
+        "./utils",
+        "./app_"
+    ]
+}
