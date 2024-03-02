@@ -1,0 +1,2 @@
+Select Agent,Task Description,Result,flag,username,timestamp
+Agent2,I like Dragon Ball Z.,"Task executed with tools: ['Tool3', 'Tool4']",,,2024-03-02 00:20:11.663970

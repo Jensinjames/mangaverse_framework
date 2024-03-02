@@ -1,8 +1,5 @@
+import json
 from typing import List, Optional
-
-# FeedbackHandler class to manage feedback collection, analysis, and application
-# It stores feedback by content ID and provides methods for collecting, analyzing, and applying feedback.<ctrl63> Users/jensinroussell/Downloads/mangaverse_framework/agents/content_creation_agent.py
-# content_creation_agent.py
 
 class ContentCreationAgent:
     def __init__(self, name="Content Creation Agent"):
@@ -34,7 +31,6 @@ class ContentCreationAgent:
         # Logic to delete content from the platform
         pass
 
-    # Feedback-related methods
     def request_feedback(self, content_id):
         """
         Requests feedback from users for a specific piece of content.
@@ -50,6 +46,7 @@ class ContentCreationAgent:
         """
         # Logic to process feedback and take appropriate actions
         pass
+
     def review_content(self, content_id):
         """
         Reviews content for quality and compliance.
@@ -65,6 +62,7 @@ class ContentCreationAgent:
         """
         # Logic to publish content to the platform
         pass
+
 class FeedbackHandler:
     def __init__(self):
         # Initialize a dictionary to store feedback by content ID
@@ -95,15 +93,35 @@ class FeedbackHandler:
         insights = "Example insights based on analysis."  # Placeholder for actual analysis logic
         return insights
 
-    def apply_feedback(self, improvements: List[str], content_id: Optional[int] = None):
+    def get_feedback(self, content_id: Optional[int] = None):
         """
-        Applies feedback to improve content or merchandise.
-        :param improvements: Suggested improvements based on feedback analysis.
-        :param content_id: Optional; Identifier for the content to apply improvements to.
+        Retrieves feedback for a specific piece of content or general feedback.
+        :param content_id: Optional; Identifier for the content to retrieve feedback for.
         """
-        # Logic to apply feedback to content creation or merchandise customization processes
-        # Example: Update content or merchandise based on the improvements list
-        if content_id:
-            print(f"Applying improvements to content {content_id}: {improvements}")
-        else:
-            print(f"Applying general improvements: {improvements}")
+        return self.feedback_storage.get(content_id, []) if content_id else self.feedback_storage.get('general', [])
+
+    def update_feedback(self, old_feedback, new_feedback):
+        """Updates a feedback in the JSON file."""
+        try:
+            with open(self.feedback_file, 'r') as file:
+                feedback_list = json.load(file)
+            
+            # Find the index of the old feedback in the list
+            index = feedback_list.index(old_feedback)
+            if index != -1:
+                # Replace the old feedback with the new one
+                feedback_list[index] = new_feedback
+            
+            # Write the updated feedback list back to the file
+            with open(self.feedback_file, 'w') as file:
+                json.dump(feedback_list, file, indent=4)
+            
+            print("Feedback updated successfully.")
+            
+        except (FileNotFoundError, json.JSONDecodeError, ValueError) as e:
+            print(f"Failed to update feedback: {e}")
+
+feedback_handler = FeedbackHandler()
+old_feedback = {"user": "User123", "comment": "This is a test feedback."}
+new_feedback = {"user": "User123", "comment": "This is an updated test feedback."}
+feedback_handler.update_feedback(old_feedback, new_feedback)
